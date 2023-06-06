@@ -32,11 +32,11 @@
 
 ## Index
 | **Experiment Name**| **Experiment-ID**      | **Aim** | **Hypothesis**     | **Reference File** | 
-|:---: | :---:        |    :----:     |          :-----:     |    :---:       |
+|:-: | :-:        |    :-----:     |          :-----:     |    :-:       |
 | Melanocytic Nevus vs Melanoma | [melanocytic_exp1](#melanocytic-nevus-vs-melanoma)    | *To ascertain the distinguishability between Melanoma and Melanocytic Nevus*        | As per literature, these two classes appear almost identical visually and evolution of the nevi is required for final classification   | melanocytic_exp1.ipynb| 
 | Melanocytic Nevus vs Melanoma (balanced) | [melanocytic_exp2](#melanocytic-nevus-vs-melanoma-balanced)    | *To ascertain the distinguishability between Melanoma and Melanocytic Nevus with balanced number of samples per class*        | Melanoma and Melanocytic Nevus are hard to distinguish. We aim to see roughly 50% accuracy for the binary classification task with the above two classes after balancing each class.   | melanocytic_exp2.ipynb|
 |Melanoma vs Dysplastic Nevi | [dysplastic_nevus_exp1](#melanoma-vs-dysplastic-nevi) | *To ascertain the distinguishibility between melanoma and dysplastic nevus* | Dysplastic nevus and splitz nevus are two classes under the parent class of Melanocytic Nevus which are the most similar to melanoma, we suspect these classes are negatively affecting the model performance due to similar appearance to melanoma. We want to determine if it is possible to distinguish melanoma from the above 2 classes and we wish to investigate if doing so yields any clinically relevant concepts.| dysplastic_nevus_exp1.ipynb|
-|Melanoma vs Dysplastic Nevi 2| 
+|Melanoma vs Dysplastic Nevi 2|[dysplastic_nevus_exp2](#melanoma-vs-dysplastic-nevi-2) |To ascertain the effect of a lower learning rate on stability of training an final testing accuracy on the distinguishibility between melanoma and dysplastic nevus. | A lower learning rate would allow for a more stable training process and final accuracies for each class will be around 50% | dysplastic_nevus_exp2.ipynb|
 
 ## **Melanocytic Nevus vs Melanoma**
 ### **Aim**
