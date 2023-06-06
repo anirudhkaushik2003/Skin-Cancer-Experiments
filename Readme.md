@@ -159,7 +159,6 @@
  - Explaining these result will provide significant insight into to exactly what the model has learnt about each class and will help us take a step towards the end goal of devising a curriculum for ordering tasks in continual learning, hopefully to achieve either better performance or more explainable models.
 
 ## **Melanoma vs Dysplastic Nevi**
-# -------INCOMPLETE, REPORT RESULTS AND CONCLUSION-------------------
 ### **Aim**
  -  To ascertain the distinguishibility between melanoma and dysplastic nevus 
 ### **Procedure**
