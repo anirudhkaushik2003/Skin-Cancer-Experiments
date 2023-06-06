@@ -117,7 +117,7 @@
     </figure>
     </div>
     <div class="col" style="flex: 50%; padding: 5px;">
-    <figure id="fig3"> 
+    <figure id="fig4"> 
     <img src="./images/acc_loss_melanocytic_exp2.2.png">
     <figcaption><p align="center">Fig.2 Accuracy Comparision with Balanced Baseline</p></figcaption>
     </figure>
@@ -125,7 +125,7 @@
     </div>
  </center>
 
- - [Figure 1](#fig3) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig3) shows that this time the performance is always significantly above the 50% threshold apart from a single dip to 55%. However, this does not change the fact that a performance drop of almost 15% from [the previous experiment](#melanocytic-nevus-vs-melanoma) has been observed.
+ - [Figure 1](#fig3) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig4) shows that this time the performance is always significantly above the 50% threshold apart from a single dip to 55%. However, this does not change the fact that a performance drop of almost 15% from [the previous experiment](#melanocytic-nevus-vs-melanoma) has been observed.
  #### *Classise Accuracy*
 
  |Class|Accuracy|
@@ -183,44 +183,47 @@
   2. **Train Epochs:** 14 
   3. **Optimizer:** *SGD*, *lr*: 0.001, *momentum*: 0.9
   4. **Additional:** 
-   - Number of samples per class was fixed to 4,552
+   - Number of samples per class was fixed to 4770 for Melanocytic Nevus in train set and 548 in test set, while for Melanoma it was fixed to 4070 samples in the train set and 452 in the test set
    - Images are resized to 224x224 to meet ResNet Specifications
+   - The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples
    - Model was retrained from scratch.
 ### **Observation**
- - The original hypothesis regarding Melanoma and Melanocytic Nevus being indistinguishable is confirmed
- - Although we didn't obtain an accuracy of 50% as expected, scores were still somewhat low
+ - The original hypothesis regarding Melanoma and Melanocytic Nevus being indistinguishable has been modified
+ - Instead of these classes being indistinguishable from each other as a whole, we observere that a specific subclass within melanocytic nevus is indistinguishable from melanoma
+ - This is true as the accuracy for the class Melanoma is abysmally low [see table](#classise-accuracy-2).  
+ - Low scores indicate atleast 50% of all samples are misclassified with the rest being classified purely by chance/guesswork (suspected). 
   <center>
     <div class="row" style="display: flex;">
     <div class="col" style="flex: 50%; padding: 5px;">
-    <figure id="fig3"> 
-    <img src="./images/acc_loss_melanocytic_exp2.1.png">
-    <figcaption><p align="center">Fig.1 Accuracy Loss Curve for MEL vs NEV</p></figcaption>
+    <figure id="fig5"> 
+    <img src="./images/acc_loss_dysplastic_nevus_exp1.1.png">
+    <figcaption><p align="center">Fig.1 Accuracy Loss Curve for MEL vs DYS_NEV</p></figcaption>
     </figure>
     </div>
     <div class="col" style="flex: 50%; padding: 5px;">
-    <figure id="fig3"> 
-    <img src="./images/acc_loss_melanocytic_exp2.2.png">
+    <figure id="fig6"> 
+    <img src="./images/acc_loss_dysplastic_nevus_exp1.2.png">
     <figcaption><p align="center">Fig.2 Accuracy Comparision with Balanced Baseline</p></figcaption>
     </figure>
     </div>
     </div>
  </center>
 
- - [Figure 1](#fig3) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig3) shows that this time the performance is always significantly above the 50% threshold apart from a single dip to 55%. However, this does not change the fact that a performance drop of almost 15% from [the previous experiment](#melanocytic-nevus-vs-melanoma) has been observed.
+ - [Figure 1](#fig5) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig6) This time the performance dipped multiple times to 55% and below (53%). The gross accuracy remains the same as [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced).
  #### *Classise Accuracy*
 
  |Class|Accuracy|
  |:----|---:|
- |1. Melanocytic Nevus|94.2%|
+ |1. Melanocytic (dysplastic suspected) Nevus|94.2%|
  |2. Melanoma |24.1%|
 
  |Mean Accuracy|Standard deviation|
  |:--:|:--:|
  |61.78%|4.66%|
 
- - The most interesting observation is the reversal of classwise accuracy scores for each class
- - This time, Melanoma performs far better (high recall (83.8% accuracy)) than Melanocytic Nevus (low recall (54.6% accuracy))
- - Classwise accuracy seems to be in favour of Melanoma as opposed to Melanocytic nevus when the samples are balanced.
- - Thus, Melanoma is easier to identify compared to Nevus, perhaps because it is present in an advanced stage in the dataset (see )
-
 ### **Conclusion**
+ - Once again, the classwise accuracies seem to have been reversed
+ - This time, dysplastic (suspected) nevus performs far better (high recall (94.2% accuracy)) than Melanoma (low recall (24.1% accuracy))
+ - Classwise accuracy seems to be in favour of Dysplastic Nevus as opposed to Melanoma even though the samples are balanced, meaning. 
+ - The shift toward nevi could be attributed to a marginally higher number of samples present in the dataset for nevi as compared to melanoma (4770 vs 4070)
+- *It would seem that there exists a class within melanocytic nevus which makes binary classification between melanoma and nevus difficult leading a classifier to make random predictions. Further experiments with a lower learning rate, higher resolution and additon of metadata are necessary for conclusive evidence but for the time being it can be assumed that such a sub-class exists.*
