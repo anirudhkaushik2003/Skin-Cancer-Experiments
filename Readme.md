@@ -355,106 +355,114 @@
  - For this experiment we will be constructing a 3 class classifier which will specialize in melanoma screening
  - To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus
  - We then train another binary classifier between melanoma and seborrheic keratosis
+ - An decision making system is used to act as the screener which combines the above classifiers to screen for melanoma
  - **The learning rate is reduced to 0.0001**
- #### Dataset Stats before appending melanoma samples
+ #### Dataset Stats for melanoma vs bkl samples
  |Dataset| Number of Samples|
  |:---|---:|
- | `train_dataset_refined` | 4770 |
- | `test_dataset_refined` | 548 |
+ | `train_dataset` | 2361 |
+ | `test_dataset` | 263 |
 
- #### Dataset Stats after appending melanoma samples
-  |Dataset| Number of Samples|
-  |:---|---:|
-  | `train_dataset_refined` | 8840 |
-  | `test_dataset_refined` | 1000 |
+ #### Dataset Stats for melanoma vs bkl vs nevus samples (final dataset)
+ |Dataset| Number of Samples|
+ |:---|---:|
+ | `train_dataset` | 2361 |
+ | `test_dataset` | 263 |
+
+ #### Dataset Stats for melanoma vs nevus samples
+ |Dataset| Number of Samples|
+ |:---|---:|
+ | `train_dataset` | 4070 |
+ | `test_dataset` | 452 |
+
+ 
+
+
 
  #### *Experiment Details*
   1. **Architecture:** ResNet101
   2. **Train Epochs:** 14 
   3. **Optimizer:** *SGD*, *lr*: 0.0001, *momentum*: 0.9
   4. **Additional:** 
-   - Number of samples per class was fixed to 4770 for Melanocytic Nevus in train set and 548 in test set, while for Melanoma it was fixed to 4070 samples in the train set and 452 in the test set
    - Images are resized to 224x224 to meet ResNet Specifications
+   - **Color constancy is applied to the dataset, however, [the previous model](#melanoma-vs-dysplastic-nevi-2) was trained without applying color constancy**
    - The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples
-   - Model was retrained from scratch.
+   - Model for benign keratosis and all 3 class classification were retrained from scratch.
 ### **Observation**
  - The training is a lot more stable as can be seen from the lower standard deviation in the accuracy loss curve
  - The final classwise accuracies are a lot closer to each other and to the 50% threshold.
  - The samples are present in a 53:47 ratio in favour of Melanocytic Nevus
  - The classwise accuracies are in a ration of 55.8:44.2 in favour of Melanocytic Nevus closely resembling the ratio of samples in the dataset
   <center>
-    <div class="row" style="display: flex;">
-    <div class="col" style="flex: 50%; padding: 5px;">
-    <figure id="fig7"> 
-    <img src="./images/acc_loss_dysplastic_nevus_exp2.1.png">
-    <figcaption><p align="center">Fig.1 Accuracy Loss Curve for MEL vs DYS_NEV</p></figcaption>
+    <div class="row">
+    <figure id="fig13"> 
+    <img src="./images/acc_loss_melanoma_screening_exp1.1.png">
+    <figcaption><p align="center">Fig.1 Accuracy Loss Curve for MEL vs BKL</p></figcaption>
     </figure>
-    </div>
-    <div class="col" style="flex: 50%; padding: 5px;">
-    <figure id="fig8"> 
-    <img src="./images/acc_loss_dysplastic_nevus_exp2.2.png">
-    <figcaption><p align="center">Fig.2 Accuracy Comparision with Balanced Baseline</p></figcaption>
-    </figure>
-    </div>
     </div>
  </center>
 
- - [Figure 1](#fig7) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig8) This time the performance is a lot more stable as compared to [the previous experiment](#melanoma-vs-dysplastic-nevi). The gross accuracy is a lot lower than the previous experiment.
+ - [Figure 1](#fig13) Reported standard deviation is low, however, there are some dips in the accuracy curve
+
  #### *Classise Accuracy*
+ ##### Melanoma vs Benign Keratosis
 
  |Class|Accuracy|
  |:----|---:|
- |1. Melanocytic (dysplastic suspected) Nevus|67.0%|
- |2. Melanoma |53.1%|
+ |1. Benign Keratosis|76.4%|
+ |2. Melanoma |58.3%|
 
  |Mean Accuracy|Standard deviation|
  |:--:|:--:|
- |58.52%|3.14%|
+ |65.82%|2.66%|
 
- #### *Visualizations*
- <center>
-    <div class="row" >
-    <div class="col" >
-    <figure id="fig9"> 
-    <img src="./images/image_visualizations_dysplastic_nevus_exp2.1.png">
-    <figcaption><p align="center">Fig.1 Some Samples visualized for MEL vs DYS_NEV with GT Labels and Predicted Labels</p></figcaption>
+  <center>
+    <div class="row">
+    <figure id="fig14"> 
+    <img src="./images/acc_loss_melanoma_screening_exp1.2.png">
+    <figcaption><p align="center">Fig.2 Accuracy Loss Curve for MEL vs BKL vs NEV</p></figcaption>
     </figure>
-    </div>
-    <div class="col" >
-    <figure id="fig10"> 
-    <img src="./images/image_visualizations_dysplastic_nevus_exp2.2.png">
-    <figcaption><p align="center">Fig.2 Some more samples visualized</p></figcaption>
-    </figure>
-    </div>
-    <div class="col" >
-    <figure id="fig11"> 
-    <img src="./images/image_visualizations_dysplastic_nevus_exp2.3.png">
-    <figcaption><p align="center">Fig.3 Some more samples visualized</p></figcaption>
-    </figure>
-    </div>
-    <div class="col" >
-    <figure id="fig12"> 
-    <img src="./images/image_visualizations_dysplastic_nevus_exp2.4.png">
-    <figcaption><p align="center">Fig.4 Some more samples visualized</p></figcaption>
-    </figure>
-    </div>
     </div>
  </center>
- 
- - As can be seen from the above figures, the images themselves are not very distinguishable from each other. For instance (all of these are from observation and not from a trained dermatologist and thus may not be accurate):
 
- |Figure|Row|Col| Gt Label|Predicted|Observation/Scrutiny |
- |:---:|:---:|:---:|:---:|:---:|:-----:|
- |[Figure 2](#fig10)|1|1|Melanocytic Nevus | Melanoma|From the figure, we the color variegation characteristic of Melanoma along with the atypical streaks/stardust pattern|
- |[Figure 3](#fig11)|2|1 and 3|Melanoma and Melanocytic Nevus |Melanocytic Nevus and Melanocytic Nevus |Apart from the slight pinkish presence on image in col 1 in the bottom right side, the two images present roughly the same characteristics|
- |[Figure 3](#fig11)|1| 3|Melanocytic Nevus |Melanocytic Nevus|To the untrained eye, this seems like Melanoma, we can see the atypical streaks and color variegation along with asymmetry|
- |[Figure 2](#fig10)|2|1 and 5|Melanoma and Melanocytic Nevus | Melanocytic Nevus and Melanocytic Nevus|Apart from the presence of atypical blotch, blue white veil and regression structure/ white scar-like depigmentation on image in col 1, the images present a similar pattern|
-
+ - [Figure 2](#fig14) Performance of the three class classifier is quite low, perhaps imagenet pre-training + finetuning is required to improve performance
  
 
- - **This table can be expanded as more knowledge is gained**
+ #### *Classise Accuracy*
+ ##### Melanoma vs Benign Keratosis vs Melanocytic nevus (randomly sampled)
+ |Class|Accuracy|
+ |:----|---:|
+ |1. Benign Keratosis|61.6%|
+ |2. Melanoma |53.2%|
+ |3. Melanocytic Nevus |47.9%|
 
 
+ |Mean Accuracy|Standard deviation|
+ |:--:|:--:|
+ |51.99%|2.92%|
+
+  <center>
+    <div class="row">
+    <figure id="fig15"> 
+    <img src="./images/acc_loss_melanoma_screening_exp1.3.png">
+    <figcaption><p align="center">Fig.3 Accuracy Loss Curve for MEL vs NEV</p></figcaption>
+    </figure>
+    </div>
+ </center>
+
+ - [Figure 3](#fig15) Reported standard deviation is low, however, there are some dips in the accuracy curve
+
+ #### *Classise Accuracy*
+ ##### Melanoma vs Melanocytic nevus (randomly sampled)
+ |Class|Accuracy|
+ |:----|---:|
+ |1. Melanoma |62.2%|
+ |2. Melanocytic Nevus |73.2%|
+
+
+ |Mean Accuracy|Standard deviation|
+ |:--:|:--:|
+ |67.19%|0.77%|
 
 ### **Conclusion**
  - Melanoma presents characteristic dermoscopic patters, however, these patterns are not unique to melanoma, rather they are also present in a subclass of Melanocytic Nevus (so far).
