@@ -37,6 +37,7 @@
 | Melanocytic Nevus vs Melanoma (balanced) | [melanocytic_exp2](#melanocytic-nevus-vs-melanoma-balanced)    | *To ascertain the distinguishability between Melanoma and Melanocytic Nevus with balanced number of samples per class*        | Melanoma and Melanocytic Nevus are hard to distinguish. We aim to see roughly 50% accuracy for the binary classification task with the above two classes after balancing each class.   | melanocytic_exp2.ipynb|
 |Melanoma vs Dysplastic Nevi | [dysplastic_nevus_exp1](#melanoma-vs-dysplastic-nevi) | *To ascertain the distinguishibility between melanoma and dysplastic nevus* | Dysplastic nevus and splitz nevus are two classes under the parent class of Melanocytic Nevus which are the most similar to melanoma, we suspect these classes are negatively affecting the model performance due to similar appearance to melanoma. We want to determine if it is possible to distinguish melanoma from the above 2 classes and we wish to investigate if doing so yields any clinically relevant concepts.| dysplastic_nevus_exp1.ipynb|
 |Melanoma vs Dysplastic Nevi 2|[dysplastic_nevus_exp2](#melanoma-vs-dysplastic-nevi-2) |To ascertain the effect of a lower learning rate on stability of training an final testing accuracy on the distinguishibility between melanoma and dysplastic nevus. | A lower learning rate would allow for a more stable training process and final accuracies for each class will be around 50% | dysplastic_nevus_exp2.ipynb|
+|Melanoma Screening|[melanoma_screening_exp1](#melanoma-screening) | To construct an ensemble classifier for melanoma screening| An ensemble of binary classifier can be used for accurate melanoma screening| melanoma_screening_exp1.ipynb |
 
 ## **Melanocytic Nevus vs Melanoma**
 ### **Aim**
@@ -235,6 +236,125 @@
  - In this experiment we determine which samples in the Melanocytic nevus class were mislabelled as Melanoma by the classifier trained in [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced).
  - We pass every misclassified nevus sample from `train_dataset` and `test_dataset` and store them in `train_dataset_refined` and `test_dataset_refined`
  - ~~The datasets are rebalanced to have an 90-10 ratio~~ Rebalancing was not required
+ - **The learning rate is reduced to 0.0001**
+ #### Dataset Stats before appending melanoma samples
+ |Dataset| Number of Samples|
+ |:---|---:|
+ | `train_dataset_refined` | 4770 |
+ | `test_dataset_refined` | 548 |
+
+ #### Dataset Stats after appending melanoma samples
+  |Dataset| Number of Samples|
+  |:---|---:|
+  | `train_dataset_refined` | 8840 |
+  | `test_dataset_refined` | 1000 |
+
+ #### *Experiment Details*
+  1. **Architecture:** ResNet101
+  2. **Train Epochs:** 14 
+  3. **Optimizer:** *SGD*, *lr*: 0.0001, *momentum*: 0.9
+  4. **Additional:** 
+   - Number of samples per class was fixed to 4770 for Melanocytic Nevus in train set and 548 in test set, while for Melanoma it was fixed to 4070 samples in the train set and 452 in the test set
+   - Images are resized to 224x224 to meet ResNet Specifications
+   - The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples
+   - Model was retrained from scratch.
+### **Observation**
+ - The training is a lot more stable as can be seen from the lower standard deviation in the accuracy loss curve
+ - The final classwise accuracies are a lot closer to each other and to the 50% threshold.
+ - The samples are present in a 53:47 ratio in favour of Melanocytic Nevus
+ - The classwise accuracies are in a ration of 55.8:44.2 in favour of Melanocytic Nevus closely resembling the ratio of samples in the dataset
+  <center>
+    <div class="row" style="display: flex;">
+    <div class="col" style="flex: 50%; padding: 5px;">
+    <figure id="fig7"> 
+    <img src="./images/acc_loss_dysplastic_nevus_exp2.1.png">
+    <figcaption><p align="center">Fig.1 Accuracy Loss Curve for MEL vs DYS_NEV</p></figcaption>
+    </figure>
+    </div>
+    <div class="col" style="flex: 50%; padding: 5px;">
+    <figure id="fig8"> 
+    <img src="./images/acc_loss_dysplastic_nevus_exp2.2.png">
+    <figcaption><p align="center">Fig.2 Accuracy Comparision with Balanced Baseline</p></figcaption>
+    </figure>
+    </div>
+    </div>
+ </center>
+
+ - [Figure 1](#fig7) The accuracy seems to always be above 50% meaning that we perform better than a random classifier. [Figure 2](#fig8) This time the performance is a lot more stable as compared to [the previous experiment](#melanoma-vs-dysplastic-nevi). The gross accuracy is a lot lower than the previous experiment.
+ #### *Classise Accuracy*
+
+ |Class|Accuracy|
+ |:----|---:|
+ |1. Melanocytic (dysplastic suspected) Nevus|67.0%|
+ |2. Melanoma |53.1%|
+
+ |Mean Accuracy|Standard deviation|
+ |:--:|:--:|
+ |58.52%|3.14%|
+
+ #### *Visualizations*
+ <center>
+    <div class="row" >
+    <div class="col" >
+    <figure id="fig9"> 
+    <img src="./images/image_visualizations_dysplastic_nevus_exp2.1.png">
+    <figcaption><p align="center">Fig.1 Some Samples visualized for MEL vs DYS_NEV with GT Labels and Predicted Labels</p></figcaption>
+    </figure>
+    </div>
+    <div class="col" >
+    <figure id="fig10"> 
+    <img src="./images/image_visualizations_dysplastic_nevus_exp2.2.png">
+    <figcaption><p align="center">Fig.2 Some more samples visualized</p></figcaption>
+    </figure>
+    </div>
+    <div class="col" >
+    <figure id="fig11"> 
+    <img src="./images/image_visualizations_dysplastic_nevus_exp2.3.png">
+    <figcaption><p align="center">Fig.3 Some more samples visualized</p></figcaption>
+    </figure>
+    </div>
+    <div class="col" >
+    <figure id="fig12"> 
+    <img src="./images/image_visualizations_dysplastic_nevus_exp2.4.png">
+    <figcaption><p align="center">Fig.4 Some more samples visualized</p></figcaption>
+    </figure>
+    </div>
+    </div>
+ </center>
+ 
+ - As can be seen from the above figures, the images themselves are not very distinguishable from each other. For instance (all of these are from observation and not from a trained dermatologist and thus may not be accurate):
+
+ |Figure|Row|Col| Gt Label|Predicted|Observation/Scrutiny |
+ |:---:|:---:|:---:|:---:|:---:|:-----:|
+ |[Figure 2](#fig10)|1|1|Melanocytic Nevus | Melanoma|From the figure, we the color variegation characteristic of Melanoma along with the atypical streaks/stardust pattern|
+ |[Figure 3](#fig11)|2|1 and 3|Melanoma and Melanocytic Nevus |Melanocytic Nevus and Melanocytic Nevus |Apart from the slight pinkish presence on image in col 1 in the bottom right side, the two images present roughly the same characteristics|
+ |[Figure 3](#fig11)|1| 3|Melanocytic Nevus |Melanocytic Nevus|To the untrained eye, this seems like Melanoma, we can see the atypical streaks and color variegation along with asymmetry|
+ |[Figure 2](#fig10)|2|1 and 5|Melanoma and Melanocytic Nevus | Melanocytic Nevus and Melanocytic Nevus|Apart from the presence of atypical blotch, blue white veil and regression structure/ white scar-like depigmentation on image in col 1, the images present a similar pattern|
+
+ 
+
+ - **This table can be expanded as more knowledge is gained**
+
+
+
+### **Conclusion**
+ - Melanoma presents characteristic dermoscopic patters, however, these patterns are not unique to melanoma, rather they are also present in a subclass of Melanocytic Nevus (so far).
+ - We suspect these concepts to be true for other classes as well, however, we have not yet explored them.
+ - The aim is to guide the network to learn these patterns and distinguish between the classes via a training regime which gradually builds up its distinguishing ability.
+ - This can be done via continual learning
+ - One major problem encountered in continual learning is catastrophic forgetting, which is the tendency of neural networks to forget previously learned information when learning new information.
+ - In our case, we want the previously learnt concepts to complement the newer concepts. At each step the classifier must sequentially test for the presence of previously learnt concepts before attempting to learn a new one.
+ - Further research is required to explore this avenue.
+
+ ## **Melanoma Screening**
+
+ ### **Aim**
+ - To construct an ensemble classifier for melanoma screening
+
+### **Procedure**
+ - For this experiment we will be constructing a 3 class classifier which will specialize in melanoma screening
+ - To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus
+ - We then train another binary classifier between melanoma and seborrheic keratosis
  - **The learning rate is reduced to 0.0001**
  #### Dataset Stats before appending melanoma samples
  |Dataset| Number of Samples|
