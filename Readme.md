@@ -252,7 +252,7 @@
  #### *Experiment Details*
   1. **Architecture:** ResNet101
   2. **Train Epochs:** 14 
-  3. **Optimizer:** *SGD*, *lr*: 0.0001, *momentum*: 0.9
+  3. **Optimizer:** *SGD*, *lr*: 0.00001, *momentum*: 0.9
   4. **Additional:** 
    - Number of samples per class was fixed to 4770 for Melanocytic Nevus in train set and 548 in test set, while for Melanoma it was fixed to 4070 samples in the train set and 452 in the test set
    - Images are resized to 224x224 to meet ResNet Specifications
@@ -356,7 +356,7 @@
  - ~~To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus~~ We finetune an imageNet pretrained model for melanoma vs melanocytic nevus classification
  - We then train another binary classifier between melanoma and seborrheic keratosis
  - An decision making system is used to act as the screener which combines the above classifiers to screen for melanoma
- - **The learning rate is reduced to 0.0001**
+ - **The learning rate is increased to 0.0001**
  #### Dataset Stats for melanoma vs bkl samples
  |Dataset| Number of Samples|
  |:---|---:|
@@ -382,7 +382,7 @@
  #### *Experiment Details*
   1. **Architecture:** ResNet101
   2. **Train Epochs:** 14 
-  3. **Optimizer:** *SGD*, *lr*: 0.0001, *momentum*: 0.9
+  3. **Optimizer:** *SGD*, ~~*lr*: 0.00001~~, *lr*: 0.0001, *momentum*: 0.9
   4. **Additional:** 
    - Images are resized to 224x224 to meet ResNet Specifications
    - **Color constancy is applied to the dataset, however, [the previous model](#melanoma-vs-dysplastic-nevi-2) was trained without applying color constancy**
