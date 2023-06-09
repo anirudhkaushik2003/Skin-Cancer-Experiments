@@ -353,7 +353,7 @@
 
 ### **Procedure**
  - For this experiment we will be constructing a 3 class classifier which will specialize in melanoma screening
- - To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus
+ - ~~To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus~~ We finetune an imageNet pretrained model for melanoma vs melanocytic nevus classification
  - We then train another binary classifier between melanoma and seborrheic keratosis
  - An decision making system is used to act as the screener which combines the above classifiers to screen for melanoma
  - **The learning rate is reduced to 0.0001**
@@ -386,8 +386,7 @@
   4. **Additional:** 
    - Images are resized to 224x224 to meet ResNet Specifications
    - **Color constancy is applied to the dataset, however, [the previous model](#melanoma-vs-dysplastic-nevi-2) was trained without applying color constancy**
-   - The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples
-   - Model for benign keratosis and all 3 class classification were retrained from scratch.
+   - ~~The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples~~ All models were finetuned from resnet101 pretrained on ImageNet
 ### **Observation**
  - The training is a lot more stable as can be seen from the lower standard deviation in the accuracy loss curve
  - The final classwise accuracies are a lot closer to each other and to the 50% threshold.
