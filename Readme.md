@@ -401,19 +401,19 @@
     </div>
  </center>
 
- - [Figure 1](#fig13) Reported standard deviation is low, however, there are some dips in the accuracy curve
+ - [Figure 1](#fig13) ~~Reported standard deviation is low, however, there are some dips in the accuracy curve~~With imageNet pre-training the model performs far better
 
  #### *Classise Accuracy*
  ##### Melanoma vs Benign Keratosis
 
  |Class|Accuracy|
  |:----|---:|
- |1. Benign Keratosis|76.4%|
- |2. Melanoma |58.3%|
+ |1. Benign Keratosis|72.2%|
+ |2. Melanoma |77.2%|
 
- |Mean Accuracy|Standard deviation|
- |:--:|:--:|
- |65.82%|2.66%|
+ |Mean Accuracy|Standard deviation| Final Test accuracy|
+ |:--:|:--:|:--:|
+ |60.10%|4.99%| 75%|
 
   <center>
     <div class="row">
@@ -431,14 +431,14 @@
  ##### Melanoma vs Benign Keratosis vs Melanocytic nevus (randomly sampled)
  |Class|Accuracy|
  |:----|---:|
- |1. Benign Keratosis|61.6%|
- |2. Melanoma |53.2%|
- |3. Melanocytic Nevus |47.9%|
+ |1. Benign Keratosis|53.2%|
+ |2. Melanoma |72.2%|
+ |3. Melanocytic Nevus |60.1%|
 
 
- |Mean Accuracy|Standard deviation|
- |:--:|:--:|
- |51.99%|2.92%|
+ |Mean Accuracy|Standard deviation| Final Test accuracy|
+ |:--:|:--:|:--:|
+ |60.10%|4.99%| 62%|
 
   <center>
     <div class="row">
@@ -449,19 +449,19 @@
     </div>
  </center>
 
- - [Figure 3](#fig15) Reported standard deviation is low, however, there are some dips in the accuracy curve
+ - [Figure 3](#fig15) Classifier is able to distinguish between Melanoma and Melanocytic Nevus with a reasonable accuracy
 
  #### *Classise Accuracy*
  ##### Melanoma vs Melanocytic nevus (randomly sampled)
  |Class|Accuracy|
  |:----|---:|
- |1. Melanoma |62.2%|
- |2. Melanocytic Nevus |73.2%|
+ |1. Melanoma |78.3%|
+ |2. Melanocytic Nevus |79.9%|
 
 
- |Mean Accuracy|Standard deviation|
- |:--:|:--:|
- |67.19%|0.77%|
+  |Mean Accuracy|Standard deviation| Final Test accuracy|
+ |:--:|:--:|:--:|
+ |77.92%|1.27%| 79%|
 
 ### **Conclusion**
  - Melanoma presents characteristic dermoscopic patters, however, these patterns are not unique to melanoma, rather they are also present in a subclass of Melanocytic Nevus (so far).
