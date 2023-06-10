@@ -553,9 +553,9 @@
  #### *Classise Accuracy*
  |Class|Accuracy|
  |:----|---:|
- |1. Melanoma |82.13%|
- |2. Melanocytic Nevus |56.27%|
- |3. Benign Keratosis|33.4%|
+ |1. Melanoma |58.9%|
+ |2. Melanocytic Nevus |42.20%|
+ |3. Benign Keratosis|69.58%|
 
 
 #### *Confusion Matrix*
@@ -564,8 +564,6 @@
 |Melanoma|		0.589354 |	0.163498 |	0.247148 |
 |Nevus|	0.133080 |	0.422053 |	0.444867 |
 |Seborrheic Keratosis|	0.254753 |	0.049430 |	0.695817 |
-
-
 
 
  - We limit our comparision to `ensemble v1.1` and `ensemble v1.0`
