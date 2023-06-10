@@ -571,6 +571,23 @@
  - Accuracy for Nevus Detection in `ensemble v1.1` is 14% lower than `ensemble v1.0`
  - Accuracy for Benign Keratosis Detection in `ensemble v1.1` is 36% higher than `ensemble v1.0`
 
+#### *Visualizations*
+ <center>
+    <div class="row" >
+    <div class="col" >
+    <figure id="fig16"> 
+    <img src="./images/image_visualizations_melanoma_screening_exp2.1.png">
+    <figcaption><p align="center">Fig.1 Some Samples visualized for MEL misclassified as NV </p></figcaption>
+    </figure>
+    </div>
+    <div class="col" >
+    <figure id="fig17"> 
+    <img src="./images/image_visualizations_melanoma_screening_exp2.2.png">
+    <figcaption><p align="center">Fig.2 Some samples visualized for MEL misclassified as BKL</p></figcaption>
+    </div>
+    </div>
+ </center>
+
 ### **Conclusion**
  - The accuracy for melanoma detection dropped to subpar leveles
  - The drop in the Melanocytic nevus is quite clearly due to its confusion with Benign keratosis
@@ -587,3 +604,5 @@
  - It can also be a sequential check, if one of the models with a higher weight classifies a samples as melanoma, the model will enter a suspected melanoma stage and a further analysis can be done to confirm the prediction
  - Tie-breaking for Nevus and Benign Keratosis can be improved by the same method
  - Improving `ensemble v1.0`'s evaluation method by simpler means is required before involving metadata and concept information. 
+
+
