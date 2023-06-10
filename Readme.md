@@ -517,15 +517,15 @@
 
 ### **Procedure**
  - We refine [ensemble v1.0](#melanoma-screening) by adding a rule based decision system constructed from literature with the following rules:
-   #### Ensemble v1.1
+   #### **Ensemble v1.1**
    ##### *Salient Features*
    1. New Decision making system based on medical literature
    2. Human engineered tie-breaking and decision making
    ##### *Decision Making Procedure*
-   1. If Melanoma vs Nevus model predicts Melanoma, then classifies as Nevus and Benign Keratosis vs Melanoma model predicts Melanoma, then classifies as Nevus since a nevus sample would look like a melanoma sample to the Benign Keratosis vs Melanoma model
-   2. If Melanoma vs Nevus model predicts Melanoma and Benign Keratosis model predicts Benign Keratosis, then classifies as Benign Keratosis as Benign Keratosis model can distinguish between Melanoma and Benign Keratosis reasonably well
+   1. If Melanoma vs Nevus model predicts Nevus, and Benign Keratosis vs Melanoma model predicts Melanoma, then classify as Nevus since a nevus sample would look like a Melanoma sample to the Benign Keratosis vs Melanoma model
+   2. If Melanoma vs Nevus model predicts Melanoma and Benign Keratosis model predicts Benign Keratosis, then classify as Benign Keratosis as Benign Keratosis model can distinguish between Melanoma and Benign Keratosis reasonably well
    3. If Melanoma vs Nevus model predicts Melanoma and Benign Keratosis model predicts Melanoma then it is very likely to be Melanoma
-   4. If Melanoma vs Nevus model predicts Nevus and Benign Keratosis model predicts Benign Keratosis then there is an ambiguity for the sample, it is most certainly not Melanoma. Since a Nevus sample would appear to be Melanoma to BKL classifier, in case of such an ambiguity, the sample is classified as Benign Keratosis
+   4. If Melanoma vs Nevus model predicts Nevus and Benign Keratosis model predicts Benign Keratosis then there is an ambiguity for the sample, it is most certainly not Melanoma. Since a Nevus sample would appear to be Melanoma to BKL classifier, in case of such an ambiguity, we classify the sample as Benign Keratosis
 
  #### Dataset Stats for melanoma vs bkl vs nevus samples (test dataset used)
  |Dataset| Number of Samples per class|
