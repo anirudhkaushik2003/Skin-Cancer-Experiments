@@ -351,11 +351,19 @@
  ### **Aim**
  - To construct an ensemble classifier for melanoma screening
 
+ *Reader's Note: For future reference the ensemble classifier thus obtained will be referred to as `ensemble v1.0`*
+
 ### **Procedure**
- - For this experiment we will be constructing a 3 class classifier which will specialize in melanoma screening
+ - For this experiment, we will be constructing a 3 class classifier which will specialize in melanoma screening
  - ~~To this end we use the classifier from [the previous experiment](#melanoma-vs-dysplastic-nevi-2) for the first stage of classification between melanoma and melanocytic nevus~~ We finetune an imageNet pretrained model for melanoma vs melanocytic nevus classification
  - We then train another binary classifier between melanoma and seborrheic keratosis
- - An decision making system is used to act as the screener which combines the above classifiers to screen for melanoma
+ - For each of the models, we stop after 14 epochs regardless of performance
+ - An ensemble decision making system is used to act as the screener which combines the above classifiers to screen for melanoma
+ - `ensemble v1.0` is constructed by combining the above classifiers using a majority voting system $\rightarrow$ **(1)** If either classifier predicits Melanoma then suspected Melanom, thus output prediction will be Melanoma
+ $\rightarrow$ **(2)** If both classifiers don't predict Melanoma then we output the class with the higher softmax probability (i.e. the class with the higher confidence)
+ - Clearly, this method has a fundamental flaw for the case when either classifier doesn't predict Melanoma. 
+ - The tie breaking doesn't take into account the similarity between the sample's class and Melanoma. If a sample' similarity is higher to Melanoma, an appropriate weight should be assigned to it's class probability.
+ - Choosing such a weight is non-trivial and we leave it to the next experiment.
  - **The learning rate is increased to 0.0001**
  #### Dataset Stats for melanoma vs bkl samples
  |Dataset| Number of Samples|
@@ -375,23 +383,21 @@
  | `train_dataset` | 4070 |
  | `test_dataset` | 452 |
 
- 
-
-
+ - The samples are split into train and test sets in the ratio 9:1
+ - The samples in each set are **perfectly balanced** as per their class labels and **randomly sampled** for each of the 3 datasets.
 
  #### *Experiment Details*
+  - *Note that the architecture and all other hyperparameters remain the same for all 3 models*
   1. **Architecture:** ResNet101
   2. **Train Epochs:** 14 
   3. **Optimizer:** *SGD*, ~~*lr*: 0.00001~~, *lr*: 0.0001, *momentum*: 0.9
   4. **Additional:** 
    - Images are resized to 224x224 to meet ResNet Specifications
-   - **Color constancy is applied to the dataset, however, [the previous model](#melanoma-vs-dysplastic-nevi-2) was trained without applying color constancy**
+   - **Color constancy is applied to this dataset and each of the 3 models are finetuned from an imageNet pre-trained model, however, [the previous model](#melanoma-vs-dysplastic-nevi-2) was trained without applying color constancy**
    - ~~The model from [the previous experiment](#melanocytic-nevus-vs-melanoma-balanced) was used for identifying misclassified Melanocytic Nevus samples~~ All models were finetuned from resnet101 pretrained on ImageNet
 ### **Observation**
- - The training is a lot more stable as can be seen from the lower standard deviation in the accuracy loss curve
- - The final classwise accuracies are a lot closer to each other and to the 50% threshold.
- - The samples are present in a 53:47 ratio in favour of Melanocytic Nevus
- - The classwise accuracies are in a ration of 55.8:44.2 in favour of Melanocytic Nevus closely resembling the ratio of samples in the dataset
+ - ImageNet pretraining certainly helped improve the performance of the model
+ - The final classwise accuracies for each model are above the 50% mark for binary classification and above the 33% mark for the single case of 3-class classifcation (see [table-1](#classise-accuracy-5), [table-2](#classise-accuracy-6) and [table-3](#classise-accuracy-7))
   <center>
     <div class="row">
     <figure id="fig13"> 
@@ -403,17 +409,17 @@
 
  - [Figure 1](#fig13) ~~Reported standard deviation is low, however, there are some dips in the accuracy curve~~With imageNet pre-training the model performs far better
 
+ ### Melanoma vs Benign Keratosis
  #### *Classise Accuracy*
- ##### Melanoma vs Benign Keratosis
 
  |Class|Accuracy|
  |:----|---:|
- |1. Benign Keratosis|72.2%|
- |2. Melanoma |77.2%|
+ |1. Benign Keratosis|69.6%|
+ |2. Melanoma |74%|
 
  |Mean Accuracy|Standard deviation| Final Test accuracy|
  |:--:|:--:|:--:|
- |60.10%|4.99%| 75%|
+ |68.94%|4.69%| 72%|
 
   <center>
     <div class="row">
@@ -424,21 +430,21 @@
     </div>
  </center>
 
- - [Figure 2](#fig14) Performance of the three class classifier is quite low, perhaps imagenet pre-training + finetuning is required to improve performance
+ - [Figure 2](#fig14) ~~Performance of the three class classifier is quite low, perhaps imagenet pre-training + finetuning is required to improve performance~~ finetuned all models with imageNet pretraining
  
 
+ ### Melanoma vs Benign Keratosis vs Melanocytic nevus (randomly sampled)
  #### *Classise Accuracy*
- ##### Melanoma vs Benign Keratosis vs Melanocytic nevus (randomly sampled)
  |Class|Accuracy|
  |:----|---:|
  |1. Benign Keratosis|53.2%|
- |2. Melanoma |72.2%|
- |3. Melanocytic Nevus |60.1%|
+ |2. Melanoma |60.1%|
+ |3. Melanocytic Nevus |73.4%|
 
 
  |Mean Accuracy|Standard deviation| Final Test accuracy|
  |:--:|:--:|:--:|
- |60.10%|4.99%| 62%|
+ |61.05%|3.73%| 64%|
 
   <center>
     <div class="row">
@@ -451,23 +457,51 @@
 
  - [Figure 3](#fig15) Classifier is able to distinguish between Melanoma and Melanocytic Nevus with a reasonable accuracy
 
+ ### Melanoma vs Melanocytic nevus (randomly sampled)
  #### *Classise Accuracy*
- ##### Melanoma vs Melanocytic nevus (randomly sampled)
  |Class|Accuracy|
  |:----|---:|
- |1. Melanoma |78.3%|
- |2. Melanocytic Nevus |79.9%|
+ |1. Melanoma |77%|
+ |2. Melanocytic Nevus |75.4%|
 
 
   |Mean Accuracy|Standard deviation| Final Test accuracy|
  |:--:|:--:|:--:|
- |77.92%|1.27%| 79%|
+ |74.23%|1.66%| 76%|
+
+ ### Ensemble Classifier ((Melanoma vs Melanocytic nevus) + (Melanoma vs Benign Keratosis))
+ #### *Classise Accuracy*
+ |Class|Accuracy|
+ |:----|---:|
+ |1. Melanoma |82.13%|
+ |2. Melanocytic Nevus |56.27%|
+ |3. Benign Keratosis|33.4%|
+
+
+#### *Confusion Matrix*
+|Name|Melanoma|	Nevus|	Seborrheic Keratosis|
+|:----:|:--:|:--:|:--:|
+|Melanoma|	0.828897 |	0.091255 |	0.079848 |
+|Nevus|	0.372624 |	0.528517 |	0.098859 |
+|Seborrheic Keratosis|	0.517110 |	0.148289 |	0.334601 |
+
+
+
+
+ - We limit our comparision to `ensemble v1.0` and the joint classifier
+ - Accuracy for Melanoma Detection is 22% higher in the ensemble classifier when compared to the final test accuracy of the joint classifier and 17% higher than its max accuracy 
+ - Consequently a 17% drop is observed in the accuracy of Melanocytic Nevus and a 20% drop in the accuracy of Benign Keratosis
 
 ### **Conclusion**
- - Melanoma presents characteristic dermoscopic patters, however, these patterns are not unique to melanoma, rather they are also present in a subclass of Melanocytic Nevus (so far).
- - We suspect these concepts to be true for other classes as well, however, we have not yet explored them.
- - The aim is to guide the network to learn these patterns and distinguish between the classes via a training regime which gradually builds up its distinguishing ability.
- - This can be done via continual learning
- - One major problem encountered in continual learning is catastrophic forgetting, which is the tendency of neural networks to forget previously learned information when learning new information.
- - In our case, we want the previously learnt concepts to complement the newer concepts. At each step the classifier must sequentially test for the presence of previously learnt concepts before attempting to learn a new one.
- - Further research is required to explore this avenue.
+ - The accuracy for melanoma detection increased quite significantly at the cost of a drop in the accuracy of the other two classes
+ - The drop in the accuracy of the other two classes could possibly be attributed to a fault in the tie-breaking mechanism of the ensemble classifier
+ - To this end we also reported the Confusion Matrix `ensemble v1.0`.
+ - Unfortunately, the false positives for melanoma seems to be very high and we've only managed to mitigate the false negatives to a certain extent
+ - A staggering 52% of Benign keratosis samples were misclassified as Melanoma while a moderate 37% of Melanocytic Nevus samples were misclassified as Melanoma
+ 
+### **For the Future**
+ - `ensemble v1.0` is a very naive implementation of an ensemble classifier, we could possibly improve the performance of the classifier by using a more robust tie-breaking mechanism
+ - Melanoma false negatives can be corrected by classwise similarity/tsne evaluation and assigning a weight to each model's melanoma prediction
+ - It can also be a sequential check, if one of the models with a higher weight classifies a samples as melanoma, the model will enter a suspected melanoma stage and a further analysis can be done to confirm the prediction
+ - Tie-breaking for Nevus and Benign Keratosis can be improved by the same method
+ - Improving `ensemble v1.0`'s evaluation method by simpler means is required before involving metadata and concept information. 
